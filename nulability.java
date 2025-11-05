@@ -1,14 +1,14 @@
-package Gs_Inventario;
+package GSI;
 
-public class nulability extends Exception {
+public class Nulability extends Exception {
 
-    public Nulability(String tipoDato, double valor) {
+    public Nulability(String tipoDato, String valor) {
         super("No puedes introducir un " + tipoDato + " nulo");
     } 
 
     // Método estático para validar un número
-    public static void verifyNulability(double valor, String tipoDato) throws Nulability {
-        if (valor == null) {
+    public static void verifyNulability(String valor, String tipoDato) throws Nulability {
+        if (valor == "" || valor == null) {
             throw new Nulability(tipoDato, valor);
         }
     }

@@ -1,4 +1,4 @@
-package Gs_Inventario;
+package GSI;
 
 public class NegativeInt extends Exception {
 

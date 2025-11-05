@@ -1,4 +1,4 @@
-package Gs_Inventario;
+package GSI;
 
 public class Product {
 	private int		id;
@@ -15,39 +15,26 @@ public class Product {
 	}
 
 //	Constructor without id
-public Product(String name, double price, int stock, String category, String description) throws NegativeInt, nulability
-{
-    // Validate if the price or the stock is negative
-    NegativeInt.verificar(price, "precio");
-    NegativeInt.verificar(stock, "stock");
-	nulability.verifyNulability(name.trim(), "nombre");
-	nulability.verifyNulability(price, "precio");
-	nulability.verifyNulability(stock, "stock");
-	nulability.verifyNulability(category.trim(), "categoria");
-	nulability.verifyNulability(description.trim(), "descripcion");
+	public Product(String name, double price, int stock, String category, String description)
+	        throws NegativeInt, Nulability, MaxLength {
 
-    // If the validation is ok it create the object
-    this.name 		=	name;
-    this.price 		=	price;
-    this.stock 		=	stock;
-    this.category 	=	category;
-    this.description=	description;
-}
+	    // Error validation
+		validarCampos(name, price, stock, category, description);
+	    // If the validation is OK it create the object
+	    this.name = name.trim();
+	    this.price = price;
+	    this.stock = stock;
+	    this.category = category.trim();
+	    this.description = description.trim();
+	}
 
 	
 //	Constructor with all the parameters
-	public	Product (int id, String name, double price, int stock, String category, String description)
+	public	Product (int id, String name, double price, int stock, String category, String description) throws NegativeInt, Nulability, MaxLength
 	{
-		// Validate if the price or the stock is negative
-    	NegativeInt.verificar(price, "precio");
-    	NegativeInt.verificar(stock, "stock");
-		nulability.verifyNulability(id, "id")
-		nulability.verifyNulability(name.trim(), "nombre");
-		nulability.verifyNulability(price, "precio");
-		nulability.verifyNulability(stock, "stock");
-		nulability.verifyNulability(category.trim(), "categoria");
-		nulability.verifyNulability(description.trim(), "descripcion");
-		
+		//Error validation
+		NegativeInt.verificar(id, "id");
+		validarCampos(name, price, stock, category, description);
 		// If the validation is ok it create the object
 		this.id			=	id;
 		this.name		=	name;
@@ -56,58 +43,92 @@ public Product(String name, double price, int stock, String category, String des
 		this.category	=	category;
 		this.description=	description;
 	}
+	
+// Validar Excepciones
+	
+	private void validarCampos(String name, double price, int stock, String category, String description)
+            throws NegativeInt, Nulability, MaxLength {
+
+        // Comprobaciones de nulabilidad
+        Nulability.verifyNulability(name, "nombre");
+        Nulability.verifyNulability(category, "categoria");
+        Nulability.verifyNulability(description, "descripcion");
+
+        // Trim y nueva verificación
+        Nulability.verifyNulability(name.trim(), "nombre");
+        Nulability.verifyNulability(category.trim(), "categoria");
+        Nulability.verifyNulability(description.trim(), "descripcion");
+
+        // Verificar longitudes máximas
+        MaxLength.verificar(name, "nombre", 100);
+        MaxLength.verificar(category, "categoria", 100);
+        MaxLength.verificar(description, "descripcion", 300);
+
+        // Verificar números negativos
+        NegativeInt.verificar(price, "precio");
+        NegativeInt.verificar(stock, "stock");
+    }
 
 //	Getters & Setters
-	public	int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public	String getName() {
-		return name;
-	}
+    // ✅ Este setter es necesario para asignar el ID autogenerado desde la BD
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public	void setName(String name) throws nulability {
-		nulability.verifyNulability(name.trim(), "nombre");
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public	double getPrice() {
-		return price;
-	}
+    public void setName(String name) throws Nulability, MaxLength {
+        Nulability.verifyNulability(name, "nombre");
+        Nulability.verifyNulability(name.trim(), "nombre");
+        MaxLength.verificar(name, "nombre", 100);
+        this.name = name.trim();
+    }
 
-	public	void setPrice(double price) throws negativeInt, nulability {
-		NegativeInt.verificar(price, "precio");
-		nulability.verifyNulability(price, "precio");
-		this.price = price;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	public	int getStock() {
-		return stock;
-	}
+    public void setPrice(double price) throws NegativeInt {
+        NegativeInt.verificar(price, "precio");
+        this.price = price;
+    }
 
-	public	void setStock(int stock) throws negativeInt, nulability {
-		NegativeInt.verificar(stock, "cantidad")
-		nulability.verifyNulability(stock, "stock");
-		this.stock = stock;
-	}
+    public int getStock() {
+        return stock;
+    }
 
-	public	String getCategory() {
-		return category;
-	}
+    public void setStock(int stock) throws NegativeInt {
+        NegativeInt.verificar(stock, "cantidad");
+        this.stock = stock;
+    }
 
-	public	void setCategory(String category) throws nulability {
-		nulability.verifyNulability(category.trim(), "categoria");
-		this.category = category;
-	}
+    public String getCategory() {
+        return category;
+    }
 
-	public	String getDescription() {
-		return description;
-	}
+    public void setCategory(String category) throws Nulability, MaxLength {
+        Nulability.verifyNulability(category, "categoria");
+        Nulability.verifyNulability(category.trim(), "categoria");
+        MaxLength.verificar(category, "categoria", 100);
+        this.category = category.trim();
+    }
 
-	public	void setDescription(String description) throws nulability {
-		nulability.verifyNulability(description.trim(), "descripcion");
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) throws Nulability, MaxLength {
+        Nulability.verifyNulability(description, "descripcion");
+        Nulability.verifyNulability(description.trim(), "descripcion");
+        MaxLength.verificar(description, "descripcion", 300);
+        this.description = description.trim();
+    }
 	
 //	ToString method
 	@Override
