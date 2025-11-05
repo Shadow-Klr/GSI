@@ -252,6 +252,8 @@ public class MainTester {
                 }
             }
 
+        manualMode(dao);
+            
         } catch (SQLException e) {
             System.err.println("❌ Error SQL general: " + e.getMessage());
         } catch (Exception e) {
@@ -264,5 +266,79 @@ public class MainTester {
         System.out.print("\nDeseas continuar con el siguiente test? (s/n): ");
         String input = scanner.nextLine().trim().toLowerCase();
         return input.equals("s") || input.equals("si");
+    }
+
+        private static void manualMode(ProductDAO dao) {
+        while (true) {
+            System.out.println("\nSeleccione una opción:");
+            System.out.println("1. Añadir producto");
+            System.out.println("2. Listar productos");
+            System.out.println("3. Buscar producto por ID");
+            System.out.println("4. Actualizar producto");
+            System.out.println("5. Borrar producto");
+            System.out.println("6. Salir");
+            System.out.print("Opción: ");
+            String option = scanner.nextLine();
+
+            try {
+                switch (option) {
+                    case "1": {
+                        System.out.print("Nombre: ");
+                        String name = scanner.nextLine();
+                        System.out.print("Precio: ");
+                        double price = Double.parseDouble(scanner.nextLine());
+                        System.out.print("Stock: ");
+                        int stock = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Categoría: ");
+                        String category = scanner.nextLine();
+                        System.out.print("Descripción: ");
+                        String description = scanner.nextLine();
+
+                        Product p = new Product(name, price, stock, category, description);
+                        dao.addProduct(p);
+                        System.out.println("✅ Producto añadido con ID: " + p.getId());
+                    }
+                    case "2": {
+                        List<Product> all = dao.getAllProducts();
+                        if (all.isEmpty()) System.out.println("No hay productos.");
+                        else all.forEach(System.out::println);
+                    }
+                    case "3": {
+                        System.out.print("Introduce el ID: ");
+                        int id = Integer.parseInt(scanner.nextLine());
+                        Product p = dao.getProductById(id);
+                        System.out.println(p != null ? p : "Producto no encontrado.");
+                    }
+                    case "4": {
+                        System.out.print("ID del producto a actualizar: ");
+                        int id = Integer.parseInt(scanner.nextLine());
+                        Product p = dao.getProductById(id);
+                        if (p == null) {
+                            System.out.println("No existe ese producto.");
+                            break;
+                        }
+                        System.out.print("Nuevo precio: ");
+                        p.setPrice(Double.parseDouble(scanner.nextLine()));
+                        System.out.print("Nuevo stock: ");
+                        p.setStock(Integer.parseInt(scanner.nextLine()));
+                        boolean ok = dao.updateProduct(p);
+                        System.out.println(ok ? "✅ Actualizado correctamente" : "❌ No se actualizó");
+                    }
+                    case "5": {
+                        System.out.print("ID del producto a borrar: ");
+                        int id = Integer.parseInt(scanner.nextLine());
+                        boolean ok = dao.deleteProduct(id);
+                        System.out.println(ok ? "✅ Producto eliminado" : "❌ No se encontró el producto");
+                    }
+                    case "6": {
+                        System.out.println("👋 Saliendo del modo manual...");
+                        return;
+                    }
+                    default: System.out.println("❌ Opción no válida.");
+                }
+            } catch (Exception e) {
+                System.out.println("⚠️ Error: " + e.getMessage());
+            }
+        }
     }
 }
