@@ -42,7 +42,7 @@ public class MainTester {
             System.out.println("\n🟢 Test 2: Obtener producto por ID (1)");
             if (!askContinue()) return;
             try {
-                Product fetched = dao.getProductById(1); // suponemos que existe
+                Product fetched = dao.getProductById(0); // suponemos que existe
                 if (fetched != null) {
                     System.out.println("✅ Producto obtenido: " + fetched);
                     passedTests++;
