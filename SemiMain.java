@@ -206,7 +206,7 @@ public class Main {
 
             try {
                 switch (option) {
-                    case "1" -> {
+                    case "1": {
                         System.out.print("Nombre: ");
                         String name = scanner.nextLine();
                         System.out.print("Precio: ");
@@ -222,18 +222,18 @@ public class Main {
                         dao.addProduct(p);
                         System.out.println("✅ Producto añadido con ID: " + p.getId());
                     }
-                    case "2" -> {
+                    case "2": {
                         List<Product> all = dao.getAllProducts();
                         if (all.isEmpty()) System.out.println("No hay productos.");
                         else all.forEach(System.out::println);
                     }
-                    case "3" -> {
+                    case "3": {
                         System.out.print("Introduce el ID: ");
                         int id = Integer.parseInt(scanner.nextLine());
                         Product p = dao.getProductById(id);
                         System.out.println(p != null ? p : "Producto no encontrado.");
                     }
-                    case "4" -> {
+                    case "4": {
                         System.out.print("ID del producto a actualizar: ");
                         int id = Integer.parseInt(scanner.nextLine());
                         Product p = dao.getProductById(id);
@@ -248,17 +248,17 @@ public class Main {
                         boolean ok = dao.updateProduct(p);
                         System.out.println(ok ? "✅ Actualizado correctamente" : "❌ No se actualizó");
                     }
-                    case "5" -> {
+                    case "5": {
                         System.out.print("ID del producto a borrar: ");
                         int id = Integer.parseInt(scanner.nextLine());
                         boolean ok = dao.deleteProduct(id);
                         System.out.println(ok ? "✅ Producto eliminado" : "❌ No se encontró el producto");
                     }
-                    case "6" -> {
+                    case "6": {
                         System.out.println("👋 Saliendo del modo manual...");
                         return;
                     }
-                    default -> System.out.println("❌ Opción no válida.");
+                    default: System.out.println("❌ Opción no válida.");
                 }
             } catch (Exception e) {
                 System.out.println("⚠️ Error: " + e.getMessage());
